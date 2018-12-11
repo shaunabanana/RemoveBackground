@@ -5,7 +5,6 @@ import os.path
 from math import tanh
 import cv2
 import numpy as np
-from scipy.signal import convolve2d
 
 parser = argparse.ArgumentParser(description='(Hopefully) removes single-colored background from images.')
 parser.add_argument('-c', nargs=3, default=[255, 255, 255], help="RGB value of the background. Defaults to white.")

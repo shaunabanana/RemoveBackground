@@ -8,6 +8,10 @@ For those who found a really nice free icon/illustration/etc., but sadly realize
 
 ![](demo3.png)
 
+**Requirements:**
+
+NumPy, OpenCV
+
 ## Usage
 
 ```shell
