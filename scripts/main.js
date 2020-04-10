@@ -73,14 +73,19 @@ function extractEdges(image, gradient) {
 function estimateAlpha(image, alpha) {
     let rgbaPlanes = new cv.MatVector();
     cv.split(image, rgbaPlanes);
+    
+    /*
     let r = rgbaPlanes.get(0);
     let g = rgbaPlanes.get(1);
     let b = rgbaPlanes.get(2);
-    cv.max(r, g, alpha);
-    cv.max(b, alpha, alpha);
+    */
+    cv.max(rgbaPlanes.get(0), rgbaPlanes.get(1), alpha);
+    cv.max(rgbaPlanes.get(2), alpha, alpha);
+    /*
     r.delete();
     g.delete();
     b.delete();
+    */
     rgbaPlanes.delete();
 
     let gradient = new cv.Mat();
@@ -176,6 +181,7 @@ function calculateError(solved) {
     errorValue += error.data.reduce(function(pv, cv) { return pv + cv; }, 0);
     error.delete();
 
+    /*
     error = new cv.Mat();
     addValue(image, -255);
     multiplyValue(image, -1);
@@ -185,7 +191,7 @@ function calculateError(solved) {
     
     errorValue += error.data.reduce(function(pv, cv) { return pv + cv; }, 0);
     error.delete();
-    
+    */
 
     //cv.threshold(solved, error, 255, 1, cv.THRESH_TRUNC);
 
@@ -278,7 +284,7 @@ imgElement.onload = function() {
     clip.setTo(new cv.Scalar(1.0));
 
     let count = 0;
-    while(count < 14) {
+    while(error > 10 && count < 14) {
         console.log(error, error / firstError);
         multiplyValue(alpha, 1.05);
         cv.min(alpha, clip, alpha);
