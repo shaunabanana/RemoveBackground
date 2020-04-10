@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+    <title>Remove image background!</title>
+    <link href="styles/main.css" rel="stylesheet">
+    <script src="opencv.js"></script>
+    <!--
+    <script async src="https://docs.opencv.org/3.4/opencv.js" onload="onOpenCvReady();" type="text/javascript"></script>
+    -->
+</head>
+
+<body>
+
+    <h2>Hello OpenCV.js!</h2>
+    <div>
+        <div class="inputoutput">
+            <img id="image" alt="No Image" />
+            <div class="caption">
+                imageSrc 
+                <input type="file" id="file" name="file" />
+            </div>
+        </div>
+    </div>
+
+    <canvas width="500px", height="500px" id="canvas" style="background:#ddd;"></canvas>
+
+
+    <script src="scripts/main.js"></script>
+    <script>
+        function onOpenCvReady() {
+            console.log("ready!")
+        }
+    </script>
+
+</body>
+
+</html>

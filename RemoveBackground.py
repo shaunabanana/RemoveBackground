@@ -42,6 +42,7 @@ alpha[alpha > 1.0] = 1.0
 alpha_old = alpha.copy()
 
 alpha = cv2.dilate(alpha, kernel=np.ones((5,5),np.uint8)).astype(np.uint8)
+print(np.max(alpha))
 alpha = cv2.erode(alpha, kernel=np.ones((5,5),np.uint8)).astype(np.uint8)
 
 factor = tanh(args.e - 1)
@@ -57,13 +58,14 @@ inverted_alpha_bgr = np.stack([inverted_alpha]*3, axis=2)
 solved = np.divide(original - inverted_alpha_bgr * background + 1e-20, alpha_bgr + 1e-20)
 
 error = abs(np.sum(solved[solved < 0])) + np.sum(solved[solved > 255])
+print(error)
 
 while error > 10:#  and abs(last_error - error) > 1e-10:
     try:
         print(error, np.sum(alpha))
-        mask1 = np.bitwise_or(solved[...,0] < 0, solved[...,1] < 0, solved[...,2] < 0)
-        mask2 = np.bitwise_or(solved[...,0] > 255, solved[...,1] > 255, solved[...,2] > 255)
-        mask = np.bitwise_or(mask1, mask2)
+        # mask1 = np.bitwise_or(solved[...,0] < 0, solved[...,1] < 0, solved[...,2] < 0)
+        # mask2 = np.bitwise_or(solved[...,0] > 255, solved[...,1] > 255, solved[...,2] > 255)
+        # mask = np.bitwise_or(mask1, mask2)
         alpha *= 1.05
         alpha[alpha > 1.0] = 1.0
         alpha_bgr = np.stack([alpha]*3, axis=2)
@@ -79,8 +81,9 @@ while error > 10:#  and abs(last_error - error) > 1e-10:
 
 solved = solved.astype(np.uint8)
 
-
+cv2.imwrite(os.path.splitext(args.image)[0] + ".color.png", solved)
 alpha = (alpha * 255).astype(np.uint8)
+cv2.imwrite(os.path.splitext(args.image)[0] + ".alpha.png", alpha)
 blue, green, red = cv2.split(solved)
 final = cv2.merge([blue, green, red, alpha])
 
