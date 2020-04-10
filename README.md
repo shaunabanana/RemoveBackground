@@ -33,28 +33,30 @@ optional arguments:
 
 ## How does it work?
 
-Basically, if we want to get the original RGBA image, we're solving this equation:
+Basically, if we want to get the original RGBA image, we're solving this equation shown below. In the equation, we use `ImageRGB` to represent our input image. `BackgroundRGB` is the constant color background we want to remove. `Alpha` and `OriginalRGB` are the two pieces of information we want to recover from the original image.
 
-```Alpha * OriginalRGB + (1 - Alpha) * BackgroundRGB = ImageRGB
+```
 Alpha * OriginalRGB + (1 - Alpha) * BackgroundRGB = ImageRGB
 ```
 
-We have to estimate one to get the other. Here we try to estimate Alpha. Do some tweaking and we get:
+However, this is one equation with two unknowns! In this case, we have to estimate one to get the other. Here, we try to estimate `Alpha`. Do some tweaking on the equation, and we get the following:
 
-```text
+```
 OriginalRGB = ImageRGB - BackgroundRGB / Alpha + BackgroundRGB
 ```
 
-One way often used by designers when it comes to removing black background, is to use the brightness of the image as alpha. Here we learn from this approach. The first step is to transform our problem (arbitrary background color) to a black background problem. We do this by simply subtracting background from foreground and taking absolute value:
+As we can see, if we pretend that we know `Alpha`, we can easily solve for `OriginalRGB`. Now let's see how we can estimate `Alpha`. One way often used by designers when it comes to removing black background, is to use the brightness of the image as alpha. Here we learn from this approach. The first step is to transform our problem (arbitrary background color) to a black background problem. We do this by simply subtracting background from foreground and taking the absolute value of the result:
 
 ```
-Alpha = BlackBackgroundImage = abs(Image - Background)
+Alpha = maxInRGB( BlackBackgroundImage ) = maxInRGB( abs(Image - Background) )
 ```
 
-However, this Alpha is often very dark, and makes the whole image somewhat transparent. One way to do this is to crank up the value by multiplying some constant. However, in this process we often lose some fine anti-aliased edges. One obvious is to protect the edges by masking them from the multiplication. Gradients work pretty well for this purpose. 
+Here `maxInRGB` denotes a pixel-wise operation that select the largest number among the R, G, and B values. 
+
+However, the `Alpha` we get this way is often very dark, and therefore makes the whole image somewhat transparent. One way to solve this problem is to crank up the value by multiplying with some constant. However, in this process we often lose some fine anti-aliased edges. One obvious solution is to protect the edges by masking them from the multiplication. Gradients work pretty well for this purpose. 
 
 ```
-EdgesMask = HorizontalGradient(Alpha) + VerticalGradient(Alpha)
+EdgesMask = max( HorizontalGradient(Alpha), VerticalGradient(Alpha) )
 EnhancerImage = (1 - EdgesMask) * e  //This is the e in the script parameters!
 Alpha = Alpha .* EnhancerImage  //Elementwise multiplication.
 ```
