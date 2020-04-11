@@ -1,0 +1,79 @@
+.toolbar {
+    display: none;
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translate(-50%, 0);
+    transition: all 0.2s ease-in-out;
+}
+
+.toolbar button {
+    display: inline-block;
+    vertical-align: middle;
+    text-align: center;
+    position: relative;
+    background: white;
+    color: #660404;
+    outline: none;
+    border: none;
+    border-radius: 25px;
+    padding: 0px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    margin-left: 0px;
+    margin-right: 0px;
+    padding-right: 8px;
+    width: 50px;
+    height: 50px;
+    line-height: 24px;
+    box-shadow: 0px 10px 10px 0px rgba(102, 4, 4, 0.2);
+    overflow: hidden;
+    opacity: 1.0;
+    transition: color 0.4s ease-in-out, box-shadow 0.2s ease-in-out;
+    font-size: 14px;
+}
+
+.toolbar button i {
+    vertical-align: middle !important;
+}
+
+.toolbar button.active {
+    z-index: 1;
+    color: white;
+    position: relative;
+}
+
+.toolbar button::before {
+    content: '';
+    z-index: -1;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 1em;
+    height: 1em;
+    border-radius: 50%;
+    background: #2B91F5;
+    transform-origin: center;
+    transform: translate(-50%, -50%) scale(0);
+    transition: transform 0.45s ease-out;
+}
+
+.toolbar button:hover {
+    cursor: pointer;
+    box-shadow: 0px 10px 14px 0px rgba(102, 4, 4, 0.3);
+}
+
+.toolbar button:active {
+    background: #FAFAFB;
+    box-shadow: 0px 2px 3px 0px rgba(0, 0, 0, 0.4);
+}
+
+.toolbar button.active::before {
+    color: white;
+    transform: translate(-50%, -50%) scale(15);
+}
+
+
+.toolbar :first-child {
+    margin-left: 10px;
+}

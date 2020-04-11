@@ -1,4 +1,272 @@
+body {
+    margin: 0px;
+    font-family: "Baloo Tamma 2", sans-serif;
+    line-height: 22px;
+    background-color: #f4f0f0;
+    width: 100%;
+    color: #660404;
+    overflow: hidden;
+}
+
+.overflow-wrapper {
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    bottom: 0px;
+    right: 0px;
+    overflow: hidden;
+}
+
+
+.social {
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    padding: 1em;
+    cursor: pointer;
+    font-size: 1.5em;
+}
+
+.social a {
+    padding: 0.2em;
+    color:inherit;
+    text-decoration: none;
+}
+
+
+.titlebg-yellow {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    height: 100%;
+    background: #ffbf56;
+    background: linear-gradient(180deg, rgba(255,191,86,1) 0%, rgba(255,214,101,1) 100%);
+    z-index: -1;
+}
+
+.titlebg {
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    width: 150%;
+    height: 20%;
+    transform: translate(-50%, -100%);
+    background-color: #f4f0f0;
+    border-radius: 50% 50% 0 0;
+    text-align: center;
+}
+
+.titlebg-text {
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    width: 100%;
+    height: 2em;
+    transform: translate(-50%, -150%);
+    text-align: center;
+    font-size: 1em;
+    color: #979797;
+}
+
+.titlebg p {
+    color: black;
+    margin-top: 8em;
+}
+
+.intro {
+    padding-top: 3em;
+    color: #660404;
+    width: 100%;
+    text-align: center;
+}
+
+.intro h2 {
+    font-size: 2.5em;
+    font-weight: 700;
+}
+
+.intro p {
+    font-size: 1em;
+    font-weight: regular;
+    padding-left: 30em;
+    padding-right: 30em;
+}
+
+.image-container {
+    position: absolute;
+    margin-top: 2.5em;
+    left: 50%;
+    height: 50em;
+    width: 50%;
+    background-color:#f9f9f9;
+    transform: translate(-50%, 0);
+    border-radius: 15px;
+    box-shadow: 0px 10px 14px 0px rgba(102, 4, 4, 0.2);
+}
+
+.image-container #upload {
+    width: 100%;
+    height: 100%;
+}
+
+#upload {
+    text-align: center;
+}
+
+#upload #file {
+    width: 0.1px;
+    height: 0.1px;
+    opacity: 0;
+    overflow: hidden;
+    position: absolute;
+    z-index: -1;
+}
+
+#upload label {
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+
+#upload label span {
+    position: absolute;
+    display: block;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+#upload label span i {
+    font-size: 2em;
+}
+
+
+@media screen and (max-width: 1400px){
+    .titlebg {
+        height: 20%;
+    }
+
+    .intro {
+        padding-top: 3em;
+    }
+    
+    .intro h2 {
+        font-size: 2.5em;
+    }
+
+    .intro p {
+        font-size: 1em;
+        padding-left: 20em;
+        padding-right: 20em;
+    }
+
+    .image-container {
+        margin-top: 3em;
+        width: 50%;
+    }
+
+    .titlebg-text {
+        font-size: 1em;
+    }
+}
+
+
+@media screen and (max-width: 992px){
+    .intro {
+        padding-top: 3em;
+    }
+    
+    .intro h2 {
+        font-size: 2.5em;
+    }
+
+    .intro p {
+        font-size: 1em;
+        padding-left: 10em;
+        padding-right: 10em;
+    }
+
+    .image-container {
+        margin-top: 3em;
+        width: 70%;
+    }
+}
+
+
+@media screen and (max-width: 700px){
+    .intro {
+        padding-top: 3em;
+    }
+    
+    .intro h2 {
+        font-size: 2em;
+    }
+
+    .intro p {
+        font-size: 0.9em;
+        padding-left: 5em;
+        padding-right: 5em;
+    }
+
+    .image-container {
+        margin-top: 2em;
+        width: 80%;
+        height: 50%;
+    }
+
+    .titlebg-text {
+        font-size: 0.9em;
+    }
+}
+
+
+@media screen and (max-width: 400px){
+    .intro {
+        padding-top: 3em;
+    }
+    
+    .intro h2 {
+        font-size: 1.5em;
+    }
+
+    .intro p {
+        font-size: 0.7em;
+        padding-left: 2em;
+        padding-right: 2em;
+        line-height: 18px;
+    }
+
+    .image-container {
+        margin-top: 2em;
+        width: 90%;
+        height: 50%;
+    }
+
+    .titlebg-text {
+        font-size: 0.7em;
+    }
+}
+
+
+canvas {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    display: none;
+}
+
 #image {
     max-width: 500px;
     display: none;
 }
+
+.upload {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
