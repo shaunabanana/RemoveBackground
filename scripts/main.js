@@ -74,18 +74,8 @@ function estimateAlpha(image, alpha) {
     let rgbaPlanes = new cv.MatVector();
     cv.split(image, rgbaPlanes);
     
-    /*
-    let r = rgbaPlanes.get(0);
-    let g = rgbaPlanes.get(1);
-    let b = rgbaPlanes.get(2);
-    */
     cv.max(rgbaPlanes.get(0), rgbaPlanes.get(1), alpha);
     cv.max(rgbaPlanes.get(2), alpha, alpha);
-    /*
-    r.delete();
-    g.delete();
-    b.delete();
-    */
     rgbaPlanes.delete();
 
     let gradient = new cv.Mat();
@@ -177,27 +167,11 @@ function calculateError(solved) {
     let error = new cv.Mat();
     let errorValue = 0;
     
+    // console.log(error.data);
+    //errorValue += error.data.reduce(function(pv, cv) { return pv + cv; }, 0);
+
     cv.threshold(image, error, 0, 0, cv.THRESH_TRUNC);
-    errorValue += error.data.reduce(function(pv, cv) { return pv + cv; }, 0);
-    error.delete();
 
-    /*
-    error = new cv.Mat();
-    addValue(image, -255);
-    multiplyValue(image, -1);
-    cv.threshold(image, error, 0, 0, cv.THRESH_TRUNC);
-    multiplyValue(error, -1);
-    image.delete();
-    
-    errorValue += error.data.reduce(function(pv, cv) { return pv + cv; }, 0);
-    error.delete();
-    */
-
-    //cv.threshold(solved, error, 255, 1, cv.THRESH_TRUNC);
-
-    //console.log(errorValue);
-    /*
-    console.log(error.channels());
     let temp = new cv.MatVector();
     cv.split(error, temp);
     for (var i = 0; i < error.channels(); i++) {
@@ -206,8 +180,15 @@ function calculateError(solved) {
         im.delete();
     }
     temp.delete();
+    error.delete();
+
+    error = new cv.Mat();
+    addValue(image, -255);
+    multiplyValue(image, -1);
+    cv.threshold(image, error, 0, 0, cv.THRESH_TRUNC);
+    multiplyValue(error, -1);
+    image.delete();
     
-    cv.threshold(solved, error, 255, 1, cv.THRESH_TRUNC);
     temp = new cv.MatVector();
     cv.split(error, temp);
     for (var i = 0; i < error.channels(); i++) {
@@ -216,26 +197,9 @@ function calculateError(solved) {
         im.delete();
     }
     temp.delete();
-
-    solved.convertTo(solved, cv.CV_8U);
-
     error.delete();
-    */
-    return errorValue;
-
-    /*
-    let temp = error.clone();
-    temp.setTo(new cv.Scalar(255.0));
-    cv.subtract(temp, error, error);
     
-    let errorValue = cv.mean(error)[0] / 255.0 * error.data.length;
-    image.delete();
-    error.delete();
-    min.delete();
-    max.delete();
-    temp.delete();
     return errorValue;
-    */
 }
 
 
@@ -284,18 +248,15 @@ imgElement.onload = function() {
     clip.setTo(new cv.Scalar(1.0));
 
     let count = 0;
-    while(error > 10 && count < 14) {
-        console.log(error, error / firstError);
+    while(error > 1 && count < 25) {
         multiplyValue(alpha, 1.05);
         cv.min(alpha, clip, alpha);
-        console.log("minMaxLoc(alpha):", cv.minMaxLoc(alpha), cv.mean(alpha));
         solveColor(original, background, alpha, solved);
         lastError = error;
 
         error = calculateError(solved);
         count ++;
     }
-    console.log(error);
     clip.delete();
     
 
@@ -309,4 +270,17 @@ imgElement.onload = function() {
     cv.merge(solvedChannels, solved);
 
     cv.imshow("canvas", solved);
+
+    downloadURI(canvasElement.toDataURL(), 'result.png');
+}
+
+
+function downloadURI(uri, name) {
+    var link = document.createElement("a");
+    link.download = name;
+    link.href = uri;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    delete link;
 }
