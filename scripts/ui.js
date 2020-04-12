@@ -2,7 +2,6 @@ document.addEventListener("DOMContentLoaded", function (event) {
     let container = document.getElementById("image-container");
     var div = document.getElementById("em");
     div.style.height = '1em';
-    console.log(window.innerHeight, container.offsetTop, div.offsetHeight);
     container.style.height = window.innerHeight - container.offsetTop - div.offsetHeight * 4 + "px";
 
     let dropArea = document.getElementById('upload');
@@ -26,7 +25,6 @@ window.addEventListener("resize", function () {
     let container = document.getElementById("image-container");
     var div = document.getElementById("em");
     div.style.height = '1em';
-    console.log(window.innerHeight, container.offsetTop, div.offsetHeight);
     container.style.height = window.innerHeight - container.offsetTop - div.offsetHeight * 4 + "px";
 })
 

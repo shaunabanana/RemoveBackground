@@ -9,10 +9,11 @@ inputElement.addEventListener("change", (e) => {
 
 
 function addValue(image, value) {
-    let add = image.clone();
-    add.setTo(new cv.Scalar(value, value, value, 0));
-    cv.add(image, add, image);
-    add.delete();
+    //let add = image.clone();
+    let adder = new cv.Mat(image.rows, image.cols, image.type());
+    adder.setTo(new cv.Scalar(value, value, value, 0));
+    cv.add(image, adder, image);
+    adder.delete();
 }
 
 
@@ -217,6 +218,8 @@ imgElement.onload = function() {
     tempChannels.push_back(originalChannels.get(1));
     tempChannels.push_back(originalChannels.get(2));
     cv.merge(tempChannels, original);
+    tempChannels.delete();
+    originalChannels.delete();
 
     //Create background image
     let r = original.data[0], g = original.data[1], b = original.data[2];
@@ -258,6 +261,7 @@ imgElement.onload = function() {
         count ++;
     }
     clip.delete();
+    background.delete();
     
 
     solved.convertTo(solved, cv.CV_8U);
@@ -272,6 +276,11 @@ imgElement.onload = function() {
     cv.imshow("canvas", solved);
 
     downloadURI(canvasElement.toDataURL(), 'result.png');
+
+    solvedChannels.delete();
+    solved.delete();
+    alpha.delete();
+    original.delete();
 }
 
 
