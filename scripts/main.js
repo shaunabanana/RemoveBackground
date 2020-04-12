@@ -133,7 +133,7 @@ function explode(image, channels, dest) {
 
 //solve for colors
 function solveColor(original, background, alpha, solved) {
-    let invertedAlpha = alpha.clone();
+    let invertedAlpha = new cv.Mat(alpha.rows, alpha.cols, alpha.type());
     invertedAlpha.setTo(new cv.Scalar(1.0));
     //invertedAlpha.convertTo(invertedAlpha, cv.CV_32F);
     cv.subtract(invertedAlpha, alpha, invertedAlpha);
@@ -249,12 +249,20 @@ imgElement.onload = function() {
     
     clip = alpha.clone();
     clip.setTo(new cv.Scalar(1.0));
+    console.log(error);
 
     let count = 0;
     while(error > 1 && count < 25) {
+        console.log(error);
         multiplyValue(alpha, 1.05);
         cv.min(alpha, clip, alpha);
-        solveColor(original, background, alpha, solved);
+        try{
+            solveColor(original, background, alpha, solved);
+        } catch {
+            console.log('error');
+            break;
+        }
+        
         lastError = error;
 
         error = calculateError(solved);
