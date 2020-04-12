@@ -1,5 +1,7 @@
 # RemoveBackground
 
+**UPDATE: [now it runs in your browser](https://seanabanana.github.io/RemoveBackground)!** There are memory limitations, though... Working on it!
+
 For those who found a really nice free icon/illustration/etc., but sadly realized it's not RGBA. This quick and dirty script is for you. Below are some examples (I added grid in the background to show the transparent parts):
 
 ![](demo1.png)
@@ -14,6 +16,11 @@ NumPy, OpenCV
 
 ## Usage
 
+Use the [web tool](https://seanabanana.github.io/RemoveBackground)
+
+or
+
+Download the script
 ```shell
 usage: python3 RemoveBackground.py [-h] [-c C C C] [-e E] [-g G] image
 
