@@ -1,0 +1,27 @@
+.progress {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 50%;
+    height: 1em;
+    border-radius: 0.5em;
+    /* border: 2px solid #d8d6d6; */
+    background-color: #f4f0f0;
+    background: linear-gradient(180deg, #d8d6d6 0%, #f4f0f0 100%);
+    transform: translate(-50%, -50%);
+    display: none;
+}
+
+
+.progress-fill {
+    position: absolute;
+    top: 50%;
+    left: 0px;
+    width: 0%;
+    height: 1em;
+    border-radius: 0.5em;
+    background: #ffbf56;
+    background: linear-gradient(180deg, rgba(255,214,101,1) 0%, rgba(255,191,86,1) 100%);
+    transform: translate(0, -50%);
+    transition: width 0.2s ease-in-out;
+}

@@ -46,6 +46,31 @@ function unhighlight(e) {
 function handleDrop(e) {
     let dt = e.dataTransfer;
     let files = dt.files;
-    let imgElement = document.getElementById("image")
+    let imgElement = document.getElementById("image");
+    let realImgElement = document.getElementById("real-image");
     imgElement.src = URL.createObjectURL(files[0]);
+    realImgElement.src = URL.createObjectURL(files[0]);
+}
+
+
+function setProgress(percentage) {
+    let progress = document.getElementById("progress-fill");
+    percentage = percentage < 0.05 ? 0.05: percentage;
+    progress.style.width = percentage * 100 + "%";
+}
+
+
+function showProgress() {
+    let progress = document.getElementById("progress");
+    let upload = document.getElementById("upload");
+    progress.style.display = "block";
+    upload.style.display = "none";
+}
+
+
+function showUpload() {
+    let progress = document.getElementById("progress");
+    let upload = document.getElementById("upload");
+    progress.style.display = "none";
+    upload.style.display = "block";
 }
