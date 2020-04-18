@@ -64,7 +64,7 @@ function downloadResult() {
 
     setTimeout(function () {
         location.reload();
-    }, 500);
+    }, 2000);
 }
 
 realImgElement.onload = function () {
