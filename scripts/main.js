@@ -108,7 +108,7 @@ imgElement.onload = function () {
     let newWidth = aspectRatio * containerHeight - 20;
     if (newWidth > window.innerWidth * 0.8) {
         newWidth = window.innerWidth * 0.8 - 20;
-        newHeight = newHeight / aspectRatio;
+        newHeight = newWidth / aspectRatio;
     }
 
     imgElement.style.maxWidth = newWidth + "px";
