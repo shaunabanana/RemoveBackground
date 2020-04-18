@@ -60,17 +60,49 @@ function setProgress(percentage) {
 }
 
 
-function showProgress() {
+function showProgress(show) {
     let progress = document.getElementById("progress");
-    let upload = document.getElementById("upload");
-    progress.style.display = "block";
-    upload.style.display = "none";
+    progress.style.display = show ? "block" : "none";
+    
 }
 
 
-function showUpload() {
-    let progress = document.getElementById("progress");
+function showUpload(show) {
     let upload = document.getElementById("upload");
-    progress.style.display = "none";
-    upload.style.display = "block";
+    upload.style.display = show ? "block" : "none";
+}
+
+
+/**
+ * Return the location of the element (x,y) being relative to the document.
+ * 
+ * @param {Element} obj Element to be located
+ */
+function getElementPosition(obj) {
+    var curleft = 0, curtop = 0;
+    if (obj.offsetParent) {
+        do {
+            curleft += obj.offsetLeft;
+            curtop += obj.offsetTop;
+        } while (obj = obj.offsetParent);
+        return { x: curleft, y: curtop };
+    }
+    return undefined;
+}
+
+
+
+/** 
+ * return the location of the click (or another mouse event) relative to the given element (to increase accuracy).
+ * @param {DOM Object} element A dom element (button,canvas,input etc)
+ * @param {DOM Event} event An event generate by an event listener.
+ */
+function getEventLocation(element,event){
+    // Relies on the getElementPosition function.
+    var pos = element.getBoundingClientRect()
+    
+    return {
+    	x: (event.pageX - pos.x),
+      	y: (event.pageY - pos.y)
+    };
 }

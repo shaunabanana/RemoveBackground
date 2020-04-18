@@ -1,3 +1,6 @@
+let g = 0.0, e = 0.0;
+
+
 function addValue(image, value) {
     //let add = image.clone();
     let adder = new cv.Mat(image.rows, image.cols, image.type());
@@ -25,6 +28,17 @@ function clipValues(image, min, max) {
     cv.max(image, minClip, image);
     maxClip.delete();
     minClip.delete();
+}
+
+
+// expand a single Mat into a multi-channel image by stacking them
+function explode(image, channels, dest) {
+    let channelsVector = new cv.MatVector();
+    for (var i = 0; i < channels; i++) {
+        channelsVector.push_back(image.clone());
+    }
+    cv.merge(channelsVector, dest);
+    channelsVector.delete();
 }
 
 
@@ -92,6 +106,7 @@ function estimateAlpha(image, alpha) {
     multiplyValue(alpha, 1 / 255.0); 
     enhance.delete();
 
+    /*
     alphaOld = alpha.clone();
     alpha.convertTo(alpha, cv.CV_8U);
 
@@ -107,17 +122,7 @@ function estimateAlpha(image, alpha) {
     alpha.convertTo(alpha, cv.CV_32F);
     cv.addWeighted(alpha, factor, alphaOld, 1.0 - factor, 0.0, alpha);
     alphaOld.delete();
-}
-
-
-// expand a single Mat into a multi-channel image by stacking them
-function explode(image, channels, dest) {
-    let channelsVector = new cv.MatVector();
-    for (var i = 0; i < channels; i++) {
-        channelsVector.push_back(image.clone());
-    }
-    cv.merge(channelsVector, dest);
-    channelsVector.delete();
+    */
 }
 
 
@@ -207,13 +212,13 @@ function deleteAlphaChannel(image) {
 }
 
 
-function __processImage_step1(imgElement, callback) {
+function __processImage_step1(imgElement, canvasName, bgcolor, callback) {
     //Load image and remove alpha channel
     original = cv.imread(imgElement);
     deleteAlphaChannel(original);
 
     //Create background image
-    let r = original.data[0], g = original.data[1], b = original.data[2];
+    let r = bgcolor[0], g = bgcolor[1], b = bgcolor[2];
     let background = original.clone();
     background.setTo(new cv.Scalar(r, g, b));
 
@@ -222,40 +227,40 @@ function __processImage_step1(imgElement, callback) {
     cv.absdiff(original, background, difference);
 
     setTimeout(function () {
-        __processImage_step2(original, background, difference, callback);
+        __processImage_step2(original, background, difference, canvasName, callback);
     }, 50);
 
     setProgress(0.1);
 }
 
 
-function __processImage_step2(original, background, difference, callback) {
+function __processImage_step2(original, background, difference, canvasName, callback) {
     //Estimate alpha using brightness
     let alpha = new cv.Mat();
     estimateAlpha(difference, alpha);
     setTimeout(function () {
-        __processImage_step3(original, background, difference, alpha, callback);
+        __processImage_step3(original, background, difference, alpha, canvasName, callback);
     }, 50);
 
     setProgress(0.2);
 }
 
 
-function __processImage_step3(original, background, difference, alpha, callback) {
+function __processImage_step3(original, background, difference, alpha, canvasName, callback) {
     //now that we have estimated alpha, let's solve for the original colors
     //we use the formula c_orig = (c_foregroud - (1 - alpha) * c_background) / alpha.
     let solved = new cv.Mat();
     solveColor(original, background, alpha, solved);
     
     setTimeout(function () {
-        __processImage_step4(original, background, difference, alpha, solved, callback);
+        __processImage_step4(original, background, difference, alpha, solved, canvasName, callback);
     }, 50);
 
     setProgress(0.3);
 }
 
 
-function __processImage_step4(original, background, difference, alpha, solved, callback) {
+function __processImage_step4(original, background, difference, alpha, solved, canvasName, callback) {
     //calculate error
     //multiplyValue(alpha, 1.0 / cv.minMaxLoc(alpha).maxVal);
     let error = calculateError(solved);
@@ -280,7 +285,7 @@ function __processImage_step4(original, background, difference, alpha, solved, c
             percentage = 1.0;
             setProgress(percentage);
             setTimeout(function () {
-                __processImage_step5(original, alpha, solved, callback);
+                __processImage_step5(original, alpha, solved, canvasName, callback);
             }, 50);
             return;
         }
@@ -298,7 +303,7 @@ function __processImage_step4(original, background, difference, alpha, solved, c
             setProgress(percentage);
 
             setTimeout(function () {
-                __processImage_step5(original, alpha, solved, callback);
+                __processImage_step5(original, alpha, solved, canvasName, callback);
             }, 50);
         }
     }
@@ -307,13 +312,13 @@ function __processImage_step4(original, background, difference, alpha, solved, c
         setTimeout(_processImage_step4_substep, 50);
     } else {
         setTimeout(function () {
-            __processImage_step5(original, alpha, solved, callback);
+            __processImage_step5(original, alpha, solved, canvasName, callback);
         }, 50);
     }
 }
 
 
-function __processImage_step5(original, alpha, solved, callback) {
+function __processImage_step5(original, alpha, solved, canvasName, callback) {
     solved.convertTo(solved, cv.CV_8U);
     let solvedChannels = new cv.MatVector();
     cv.split(solved, solvedChannels);
@@ -323,7 +328,7 @@ function __processImage_step5(original, alpha, solved, callback) {
     solvedChannels.push_back(alpha);
     cv.merge(solvedChannels, solved);
 
-    cv.imshow("canvas", solved);
+    cv.imshow(canvasName, solved);
 
 
     solvedChannels.delete();
@@ -337,8 +342,8 @@ function __processImage_step5(original, alpha, solved, callback) {
 }
 
 
-function processImage(imgElement, callback) {
+function processImage(imgElement, canvasName, bgcolor, callback) {
     setTimeout(function () {
-        __processImage_step1(imgElement, callback);
+        __processImage_step1(imgElement, canvasName, bgcolor, callback);
     }, 50);
 }

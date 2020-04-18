@@ -8,10 +8,6 @@ body {
     overflow: hidden;
 }
 
-#real-image {
-    
-}
-
 .overflow-wrapper {
     position: fixed;
     top: 0px;
@@ -19,6 +15,7 @@ body {
     bottom: 0px;
     right: 0px;
     overflow: hidden;
+    
 }
 
 
@@ -98,13 +95,17 @@ body {
     margin-bottom: -0.5em;
 }
 
+.intro #tip-download {
+    display: none;
+}
+
 .image-container {
     position: absolute;
     margin-top: 2.5em;
     left: 50%;
     height: 50em;
     width: 50%;
-    background-color:#f9f9f9;
+    background-color: #fcf8f8;
     transform: translate(-50%, 0);
     border-radius: 15px;
     box-shadow: 0px 10px 14px 0px rgba(102, 4, 4, 0.2);
@@ -116,12 +117,26 @@ body {
     height: 100%;
 }
 
+.image-container #upload label {
+    cursor: pointer;
+}
+
 .image-container img {
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
     padding: 10px;
+}
+
+.image-container canvas {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    opacity: 0;
+    transition: width 0.2s ease-in-out;
+    cursor: pointer;
 }
 
 #upload {
@@ -273,7 +288,7 @@ canvas {
 }
 
 #image {
-    max-width: 500px;
+    /* max-width: 500px; */
     display: none;
 }
 
@@ -284,3 +299,8 @@ canvas {
     transform: translate(-50%, -50%);
 }
 
+
+
+.bold {
+    font-weight: bold;
+}

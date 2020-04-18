@@ -22,7 +22,7 @@
 </head>
 
 <body>
-    <div class="overflow-wrapper">
+    <div class="overflow-wrapper" id="app">
         <div class="social">
             <a href="https://github.com/seanabanana"><i class="fab fa-github"></i></a>
             <a href="https://twitter.com/MaybeShauna"><i class="fab fa-twitter"></i></a>
@@ -36,13 +36,16 @@
         <div class="intro">
             <h2>we want transparency!</h2>
             <p>no, probably not the transparency you were thinking...😈</p>
-            <p>this tool recovers the lost transparency information from an image by removing its background, as long as the background is all in one single color. drop/add an image below to see it in action! </p>
-            <p>For more information, check out its <a href="https://github.com/seanabanana/RemoveBackground">github repo</i></a>.</p>
+            <p>this tool recovers the lost transparency information from an image by removing its background, as long as the background is all in one single color. For more information, check out its <a href="https://github.com/seanabanana/RemoveBackground">github repo</i></a>. </p>
+            <p class="bold" id="tip">drop/add an image below to see it in action!</p>
+            <p class="bold" id="tip-download">transparency restored! <a href="#" onclick="downloadResult(); return false;">click here to download.</a></p>
         </div>
 
         <div class="image-container" id="image-container">
+
             <canvas id="canvas"></canvas>
-            <img id="image" alt="No Image" />
+            <img id="image" alt="No Image"/>
+
             <div id="upload">
                 <input type="file" id="file" name="file" />
                 <label for="file">
@@ -55,19 +58,23 @@
             <div class="progress" id="progress"><div class="progress-fill" id="progress-fill"></div></div>
         </div>
 
+        <!--
         <div class="toolbar">
-            <button>
-                <i class="material-icons">colorize</i>
+            <button id="eyedropper" onclick="eyedropperClicked();">
+                <i class="fas fa-eye-dropper"></i>
             </button>
-            <button>
-                <i class="material-icons">save</i>
+            <br/>
+            <button id="download" onclick="downloadClicked();">
+                <i class="fas fa-download"></i>
             </button>
         </div>
+        -->
     </div>
 
     <div id="em" style="height:0;width:0;outline:none;border:none;padding:none;margin:none;box-sizing:content-box;"></div>
 
     <img id="real-image"/>
+    <canvas id="real-canvas"></canvas>
 
     <script src="scripts/ui.js"></script>
     <script src="scripts/imageprocessing.js"></script>
